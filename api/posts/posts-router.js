@@ -32,6 +32,15 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-
+router.post('/', (req, res) => {
+    Post.insert(req.body)
+    .then(posty => {
+        res.status(201).json(posty)
+    })
+    .catch(err => {
+        console.error(err)
+        res.status(500).json({ message: "There was an error while saving the post to the database" })
+    })
+})
 
 module.exports = router
