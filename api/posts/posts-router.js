@@ -36,15 +36,19 @@ router.post('/', async (req, res) => {
     const { title, contents } = req.body
 
     if (!title || !contents) {
-        return res.status(400).json({ message: "Please provide title and contents for the post" })
+        return res.status(400).json(
+            { message: "Please provide title and contents for the post" })
     }
+
     try {
-        const newPost = await Post.insert(req.body)
-        res.status(201).json(newPost)
-    }
-    catch (err) {
+        const { id } = await Post.insert({ title, contents })
+        const post = await Post.findById(id)
+        res.status(201).json(post)
+    } catch (err) {
         console.error(err)
-        res.status(500).json({ message: "There was an error while saving the post to the database" })
+        res.status(500).json(
+            { message: "There was an error while saving the post to the database" }
+        )
     }
 })
 
